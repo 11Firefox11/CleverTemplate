@@ -1,6 +1,7 @@
 import os, sqlite3, datetime
 
 def connect_databse():
+    # print(os.path.dirname(os.path.realpath(__file__)))
     conn = sqlite3.connect("./logs.db")
     return conn
 

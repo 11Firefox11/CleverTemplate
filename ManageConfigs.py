@@ -65,7 +65,7 @@ def GroupParameters(path, forcedefparval=True):
         for file in data:
             params = {}
             for param in data[file]:
-                if param != None:
+                if param != None and param not in params:
                     paramoptions = data[file][param]
                     paramcheck = CheckParameterOptions(paramoptions, forcedefparval)
                     if paramcheck:
