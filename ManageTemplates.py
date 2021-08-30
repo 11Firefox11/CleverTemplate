@@ -1,4 +1,4 @@
-import os, pathlib
+import os, pathlib, CleverTemplateErrors
 from jinja2 import Template
 
 def CreateTemplate(path, data):
@@ -6,17 +6,18 @@ def CreateTemplate(path, data):
         template = Template(str(open(path, "r").read()))
         return template.render(data=data)
     else:
-        return False
+        raise CleverTemplateErrors.ConfigFileNotInPath(path)
 
 def SaveTemplate(path, data, customfile=None, forcecustom=True):
     if os.path.isfile(path):
         dir = os.path.abspath(str(pathlib.Path(path).parent))
+        customfile = os.path.split(path)[1]
     elif customfile == None:
-        return False
-    if os.path.exists(path):
+        return False #error here
+    elif os.path.exists(path):
         dir = path
     else:
-        return False
+        raise CleverTemplateErrors.PathDoesNotExist(path)
     file = customfile
     if customfile == None or forcecustom == True:
         if customfile == None:
@@ -32,5 +33,6 @@ def SaveTemplate(path, data, customfile=None, forcecustom=True):
     fullfilepath = os.path.join(dir, file)
     if os.path.exists(fullfilepath) == False:
         open(fullfilepath, "w+").write(data)
+        return fullfilepath
     else:
-        return False
+        raise CleverTemplateErrors.PathAlreadyExist(path)

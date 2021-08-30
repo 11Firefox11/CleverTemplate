@@ -1,4 +1,4 @@
-import os, json, pathlib
+import os, json, pathlib, CleverTemplateErrors
 
 configfile = "ct-config.json"
 
@@ -13,14 +13,12 @@ def CheckPath(path):
     for canpath in canbepaths:
         if os.path.isfile(canpath):
             return canpath
-    return False
+    raise CleverTemplateErrors.ConfigFileNotInPath(path)
 
 def ReadConfigJson(path):
     configpath = CheckPath(path)
     if configpath:
         return json.load(open(configpath,))
-    else:
-        return False
 
 def CheckFiles(path):
     data = ReadConfigJson(path)
@@ -34,8 +32,6 @@ def CheckFiles(path):
             if os.path.isfile(os.path.join(maindir, file)):
                 enddata[file] = data[file]
         return enddata
-    else:
-        return False
 
 def CheckParameterOptions(options, forcedefval=True):
     output = {}
@@ -72,9 +68,10 @@ def GroupParameters(path, forcedefparval=True):
                         params[param] = paramcheck
             if params != {}:
                 output[file] = params
+        if output == {}:
+            pathinerror = CheckPath(path)
+            raise CleverTemplateErrors.ConfigFileSyntaxError(pathinerror)
         return output
-    else:
-        return False
 
 def CheckCustomParameters(path, customparams, forcedefval=True):
     data = GroupParameters(path, forcedefval)
@@ -96,5 +93,3 @@ def CheckCustomParameters(path, customparams, forcedefval=True):
                 if params != {}:
                     output[file] = params
         return output
-    else:
-        return False

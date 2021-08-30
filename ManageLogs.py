@@ -28,5 +28,5 @@ def LogTemplate(frompath, topath, templatetime=None):
         insertcommand = 'INSERT INTO templates(time, frompath, topath) VALUES(?,?,?)'
         c.execute(insertcommand, (templatetime, frompath, topath))
         conn.commit()
-        print("x")
         c.close()
+        return True
