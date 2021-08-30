@@ -22,8 +22,8 @@ def ReadConfigJson(path):
 
 def CheckFiles(path):
     data = ReadConfigJson(path)
-    enddata = {}
     if data:
+        enddata = {}
         if os.path.isfile(path):
             maindir = pathlib.Path(path).parent
         elif os.path.isdir(path):
@@ -46,35 +46,43 @@ def CheckParameterOptions(options, forcedefval=True):
                     else:
                         options.append(currdefval)
                 else:
-                    return False
+                    raise CleverTemplateErrors.ParameterOptions(options, "parameter does not have default value")
             output = options
         else:
-            return False
+            raise CleverTemplateErrors.ParameterOptions(options, f"{options[0]} is not a parameter type")
     else:
-        return False
+        raise CleverTemplateErrors.ParameterOptions(options, "parameter options can't be empty")
     return output
 
-def GroupParameters(path, forcedefparval=True):
+def GroupParameters(path, forcedefparval=True, canprint=True):
     data = CheckFiles(path)
     output = {}
+    skips = {}
     if data != False:
         for file in data:
             params = {}
+            skip = {}
             for param in data[file]:
                 if param != None and param not in params:
                     paramoptions = data[file][param]
-                    paramcheck = CheckParameterOptions(paramoptions, forcedefparval)
-                    if paramcheck:
-                        params[param] = paramcheck
+                    try:
+                        paramcheck = CheckParameterOptions(paramoptions, forcedefparval)
+                        if paramcheck:
+                            params[param] = paramcheck
+                    except Exception as e:
+                        if canprint:
+                            skip[param] = e
             if params != {}:
                 output[file] = params
+            if skip != {}:
+                skips[file] = skip
         if output == {}:
             pathinerror = CheckPath(path)
-            raise CleverTemplateErrors.ConfigFileSyntaxError(pathinerror)
-        return output
+            raise CleverTemplateErrors.ConfigFileSyntax(pathinerror)
+        return output, skips
 
 def CheckCustomParameters(path, customparams, forcedefval=True):
-    data = GroupParameters(path, forcedefval)
+    data = GroupParameters(path, forcedefval)[0]
     output = {}
     if data != False:
         for file in data:

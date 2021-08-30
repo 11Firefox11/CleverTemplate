@@ -28,7 +28,7 @@ class PathAlreadyExist(Exception):
     def __str__(self):
         return f"path: '{self.path}' -> {self.message}"
 
-class ConfigFileSyntaxError(Exception):
+class ConfigFileSyntax(Exception):
     def __init__(self, path, message=f"config file can't find any files to use in the directory, bad syntax"):
         self.path = os.path.abspath(path)
         self.message = message
@@ -36,3 +36,12 @@ class ConfigFileSyntaxError(Exception):
     
     def __str__(self):
         return f"path: '{self.path}' -> {self.message}"
+
+class ParameterOptions(Exception):
+    def __init__(self, parameteroptions, message=f"parameter option error"):
+        self.parameteroptions = parameteroptions
+        self.message = message
+        super().__init__(self.message)
+    
+    def __str__(self):
+        return f"parameteroptions: '{self.parameteroptions}' -> {self.message}"
