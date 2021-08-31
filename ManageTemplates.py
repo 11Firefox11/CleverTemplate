@@ -13,11 +13,11 @@ def SaveTemplate(path, data, customfile=None, forcecustom=True):
         dir = os.path.abspath(str(pathlib.Path(path).parent))
         customfile = os.path.split(path)[1]
     elif customfile == None:
-        return False #error here
-    elif os.path.exists(path):
-        dir = path
+        print("x")
+        return False 
     else:
-        raise CleverTemplateErrors.PathDoesNotExist(path)
+        dir = path
+        os.mkdir(dir)
     file = customfile
     if customfile == None or forcecustom == True:
         if customfile == None:
