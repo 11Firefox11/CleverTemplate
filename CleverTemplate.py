@@ -1,8 +1,30 @@
 import os, sys, argparse, pathlib, ManageConfigs, ManageLogs, ManageTemplates
 
 mainpath = os.path.dirname(os.path.realpath(__file__))
+version = "1.0"
+commands = {
+    "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template"}
+}
 
-def create():
+def InitArgparse():
+    parser = argparse.ArgumentParser(add_help=False, description=f"Clever Template - {version}") # epilog="For more information, read the documentation, or go to the official website."
+    subparsers = parser.add_subparsers(help='Available commands.')
+    for command in commands:
+        commanddict = commands[command]
+        commandparse = subparsers.add_parser(command, help=commanddict["help"], add_help=False, description=commanddict["desc"])
+        for arg in commanddict["args"]:
+            argdict = commanddict["args"][arg]
+            if "default" not in argdict:
+                argdict["default"] = None
+            commandparse.add_argument(arg, help=argdict["help"], default=argdict["default"])
+        commandparse.add_argument('--help', '-h', action='help', default=argparse.SUPPRESS, help=f"Show help about this command ({command}).")
+        commandparse.set_defaults(func=globals()[command])
+    parser.add_argument('--version','-v', action='version',version=f"Clever Template version: {version}", help="Shows app's version number.")
+    parser.add_argument('--help','-h', action='help', default=argparse.SUPPRESS, help='Shows help about the app.')
+    args = parser.parse_args()
+    args.func(args)
+
+def create(args):
     try:
         data, skips = ManageConfigs.GroupParameters(args.path)
         outputdir = os.path.abspath(os.path.join(pathlib.Path(ManageConfigs.CheckPath(args.path)).parent, "ct-output"))
@@ -29,14 +51,8 @@ def create():
     except Exception as e:
         print(e)
 
+def help():
+    print("Clever Template - help\nCommands:\ncreate - create templates with this command, you can specify the path argument, but the default path is the current path")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("command", help="Command list: create, help, log.")
-    parser.add_argument("--path", help="Path to the ct-config.json", default="./ct-config.json")
-    parser.add_argument('-v', '--version', action='version',
-                    version='Clever Template: 1.0.', help="Shows program's version number.")
-    parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS,
-                    help='Show help about the program.')
-    args = parser.parse_args()
-    globals()[args.command]()
+    InitArgparse()
