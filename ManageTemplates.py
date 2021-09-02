@@ -13,7 +13,6 @@ def SaveTemplate(path, data, customfile=None, forcecustom=True):
         dir = os.path.abspath(str(pathlib.Path(path).parent))
         customfile = os.path.split(path)[1]
     elif customfile == None:
-        print("x")
         return False 
     else:
         dir = path

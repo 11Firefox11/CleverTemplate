@@ -45,3 +45,21 @@ class ParameterOptions(Exception):
     
     def __str__(self):
         return f"parameteroptions: '{self.parameteroptions}' -> {self.message}"
+
+class LogTypeDoesNotExist(Exception):
+    def __init__(self, logtpye, avaliable,message=f"log type does not exists, avaiable logs: "):
+        self.logtpye = logtpye
+        self.message = message + ", ".join(["'"+x["name"]+"'" for x in avaliable])
+        super().__init__(self.message)
+    
+    def __str__(self):
+        return f"logtype: '{self.logtpye}' -> {self.message}"
+
+class ErrorWhenTryingToWriteInFile(Exception):
+    def __init__(self, path, message=f"can't write in file"):
+        self.path = os.path.abspath(path)
+        self.message = message
+        super().__init__(self.message)
+    
+    def __str__(self):
+        return f"logtype: '{self.path}' -> {self.message}"

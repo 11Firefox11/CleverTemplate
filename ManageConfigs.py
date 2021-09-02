@@ -54,7 +54,7 @@ def CheckParameterOptions(options, forcedefval=True):
         raise CleverTemplateErrors.ParameterOptions(options, "parameter options can't be empty")
     return output
 
-def GroupParameters(path, forcedefparval=True, canprint=True):
+def GroupParameters(path, forcedefparval=True):
     data = CheckFiles(path)
     output = {}
     skips = {}
@@ -70,8 +70,7 @@ def GroupParameters(path, forcedefparval=True, canprint=True):
                         if paramcheck:
                             params[param] = paramcheck
                     except Exception as e:
-                        if canprint:
-                            skip[param] = e
+                        skip[param] = e
             if params != {}:
                 output[file] = params
             if skip != {}:

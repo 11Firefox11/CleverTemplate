@@ -3,7 +3,8 @@ import os, sys, argparse, pathlib, ManageConfigs, ManageLogs, ManageTemplates
 mainpath = os.path.dirname(os.path.realpath(__file__))
 version = "1.0"
 commands = {
-    "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template"}
+    "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template."},
+    "log":{"args": {"path":{"help":"Specify the output directory.", "default":"."}, "logtype":{"help":"Specify the logtype.", "default":"templates"}}, "desc":"Save log to a txt file, by giving the output directory path and the log type. The logs are created automatically by the app.", "help":"Save txt file about a log."}
 }
 
 def InitArgparse():
@@ -22,7 +23,17 @@ def InitArgparse():
     parser.add_argument('--version','-v', action='version',version=f"Clever Template version: {version}", help="Shows app's version number.")
     parser.add_argument('--help','-h', action='help', default=argparse.SUPPRESS, help='Shows help about the app.')
     args = parser.parse_args()
-    args.func(args)
+    try:
+        args.func(args)
+    except:
+        parser.print_help()
+
+def log(args):
+    try:
+        outputpath = os.path.abspath(ManageLogs.WriteLogs(args.path, args.logtype))
+        print(f"Log txt file successfully created at '{outputpath}''.")
+    except Exception as e:
+        print(e)
 
 def create(args):
     try:
@@ -46,13 +57,10 @@ def create(args):
                 print(f"Creating template {file}...")
                 templatefile = os.path.join(os.path.split(ManageConfigs.CheckPath(args.path))[0], file)
                 path = ManageTemplates.SaveTemplate(outputdir, ManageTemplates.CreateTemplate(templatefile, customdata[file]), file)
-                print(f"Template created: {path}.")
+                print(f"Template created: {path}. Parameters: {str(customdata[file])}")
                 ManageLogs.LogTemplate(os.path.abspath(templatefile), path, str(customdata[file]))
     except Exception as e:
         print(e)
-
-def help():
-    print("Clever Template - help\nCommands:\ncreate - create templates with this command, you can specify the path argument, but the default path is the current path")
 
 if __name__ == "__main__":
     InitArgparse()
