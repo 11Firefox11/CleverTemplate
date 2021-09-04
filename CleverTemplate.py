@@ -1,4 +1,5 @@
-import os, sys, argparse, pathlib, ManageConfigs, ManageLogs, ManageTemplates
+import os, argparse, pathlib, traceback
+from modules import ManageConfigs, ManageLogs, ManageTemplates
 
 mainpath = os.path.dirname(os.path.realpath(__file__))
 version = "1.0"
@@ -25,42 +26,40 @@ def InitArgparse():
     args = parser.parse_args()
     try:
         args.func(args)
-    except:
-        parser.print_help()
+    except Exception as e:
+        if e.__class__.__name__ == "AttributeError":
+            parser.print_help()
+        else:
+            print(e)
 
 def log(args):
-    try:
-        outputpath = os.path.abspath(ManageLogs.WriteLogs(args.path, args.logtype))
-        print(f"Log txt file successfully created at '{outputpath}''.")
-    except Exception as e:
-        print(e)
+    path = ManageLogs.WriteLogs(args.path, args.logtype)
+    outputpath = os.path.abspath(path)
+    print(f"Log txt file successfully created at '{outputpath}''.")
 
 def create(args):
-    try:
-        data, skips = ManageConfigs.GroupParameters(args.path)
-        outputdir = os.path.abspath(os.path.join(pathlib.Path(ManageConfigs.CheckPath(args.path)).parent, "ct-output"))
-        print(outputdir)
-        for file in skips:
-            for parameter in skips[file]:
-                print(f"Skipped {parameter} at {file} while checking config file syntax. {skips[file][parameter]}")
-        customdata = {}
-        if data:
-            for file in data:
-                print(f"Editing '{file}' parameters:")
-                params = {}
-                for param in data[file]:
-                    print(f"Parameter: '{param}', type: '{data[file][param][0]}', default value: '{data[file][param][1]}'")
-                    params[param] = input("Type in the value of the parameter: ")
-                customdata[file] = params
-            customdata = ManageConfigs.CheckCustomParameters(args.path, customdata)
-            for file in customdata:
-                print(f"Creating template {file}...")
-                templatefile = os.path.join(os.path.split(ManageConfigs.CheckPath(args.path))[0], file)
-                path = ManageTemplates.SaveTemplate(outputdir, ManageTemplates.CreateTemplate(templatefile, customdata[file]), file)
-                print(f"Template created: {path}. Parameters: {str(customdata[file])}")
-                ManageLogs.LogTemplate(os.path.abspath(templatefile), path, str(customdata[file]))
-    except Exception as e:
-        print(e)
+    data, skips = ManageConfigs.GroupParameters(args.path)
+    outputdir = os.path.abspath(os.path.join(pathlib.Path(ManageConfigs.CheckPath(args.path)).parent, "ct-output"))
+    print(outputdir)
+    for file in skips:
+        for parameter in skips[file]:
+            print(f"Skipped {parameter} at {file} while checking config file syntax. {skips[file][parameter]}")
+    customdata = {}
+    if data:
+        for file in data:
+            print(f"Editing '{file}' parameters:")
+            params = {}
+            for param in data[file]:
+                print(f"Parameter: '{param}', type: '{data[file][param][0]}', default value: '{data[file][param][1]}'")
+                params[param] = input("Type in the value of the parameter: ")
+            customdata[file] = params
+        customdata = ManageConfigs.CheckCustomParameters(args.path, customdata)
+        for file in customdata:
+            print(f"Creating template {file}...")
+            templatefile = os.path.join(os.path.split(ManageConfigs.CheckPath(args.path))[0], file)
+            path = ManageTemplates.SaveTemplate(outputdir, ManageTemplates.CreateTemplate(templatefile, customdata[file]), file)
+            print(f"Template created: {path}. Parameters: {str(customdata[file])}")
+            ManageLogs.LogTemplate(os.path.abspath(templatefile), path, str(customdata[file]))
 
 if __name__ == "__main__":
     InitArgparse()

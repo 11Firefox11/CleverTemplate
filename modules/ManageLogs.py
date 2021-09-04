@@ -1,12 +1,13 @@
-from ntpath import join
-import os, sqlite3, datetime, CleverTemplateErrors, json
-from tabulate import tabulate
-mainpath = os.path.dirname(os.path.realpath(__file__))
+import os, sqlite3, datetime, pathlib
+from .CleverTemplateErrors import *
+
+mainpath = pathlib.Path(os.path.dirname(os.path.realpath(__file__))).parent
+dbpath = os.path.join(mainpath, "logs.db")
 tables = {
     "templates":'CREATE TABLE IF NOT EXISTS templates (time TEXT,frompath TEXT,topath TEXT, data TEXT);'
 }
 def connect_databse():
-    conn = sqlite3.connect(os.path.join(mainpath, "logs.db"))
+    conn = sqlite3.connect(dbpath)
     conn.row_factory = dict_sql
     return conn
 
@@ -46,7 +47,7 @@ def ReadLog(logtype):
         exist = c.execute("select count(*) from sqlite_master where type='table' and name=?", (logtype,)).fetchall()
         if exist[0]['count(*)'] != 0:
             return c.execute(f"SELECT * FROM {logtype}",).fetchall()
-    raise CleverTemplateErrors.LogTypeDoesNotExist(logtype, ListLogs())
+    raise LogTypeDoesNotExist(logtype, ListLogs())
 
 def ListLogs():
     c = connect_databse().cursor()
@@ -64,7 +65,7 @@ def WriteLogs(path, logtype):
                     n += 1
             else:
                 break
-        try:
+        if os.path.isfile(dbpath) and os.path.exists(dbpath):
             c = connect_databse().cursor()
             c.execute("SELECT name FROM PRAGMA_TABLE_INFO('templates');")
             rowtopraw = c.fetchall()
@@ -80,7 +81,12 @@ def WriteLogs(path, logtype):
                     partlist.append(str(part[p]))
                 enddata.append(partlist)
             writedata = [" - ".join(partdata) for partdata in enddata]
-            open(fullpath, "w+").write("\n".join([d for d in writedata]))
+            try:
+                open(fullpath, "w+").write("\n".join([d for d in writedata]))
+            except:
+                raise ErrorWhenTryingToWriteInFile(fullpath)
             return fullpath
-        except Exception as e:
-            raise CleverTemplateErrors.ErrorWhenTryingToWriteInFile(fullpath)
+        else:
+            raise LogTypeDoesNotExist(logtype, [])
+    else:
+        raise PathDoesNotExist(path)

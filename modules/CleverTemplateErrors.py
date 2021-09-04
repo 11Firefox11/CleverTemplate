@@ -47,9 +47,12 @@ class ParameterOptions(Exception):
         return f"parameteroptions: '{self.parameteroptions}' -> {self.message}"
 
 class LogTypeDoesNotExist(Exception):
-    def __init__(self, logtpye, avaliable,message=f"log type does not exists, avaiable logs: "):
+    def __init__(self, logtpye, avaliable,message=f"log type does not exists"):
         self.logtpye = logtpye
-        self.message = message + ", ".join(["'"+x["name"]+"'" for x in avaliable])
+        if avaliable != []:
+            self.message = message + ", avaiable logs: " +", ".join(["'"+x["name"]+"'" for x in avaliable])
+        else:
+            self.message = message + ", there are no logs"
         super().__init__(self.message)
     
     def __str__(self):

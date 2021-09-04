@@ -1,4 +1,5 @@
-import os, json, pathlib, CleverTemplateErrors
+import os, json, pathlib
+from . import CleverTemplateErrors
 
 configfile = "ct-config.json"
 

@@ -1,5 +1,6 @@
-import os, pathlib, CleverTemplateErrors
+import os, pathlib
 from jinja2 import Template
+from . import CleverTemplateErrors
 
 def CreateTemplate(path, data):
     if os.path.isfile(path):
