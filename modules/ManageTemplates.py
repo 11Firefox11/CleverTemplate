@@ -1,6 +1,7 @@
 import os
+from traceback import print_exc
 from jinja2 import Template
-from CtExceptions import *
+from .CtExceptions import *
 
 class CleverTemplate:
 
@@ -10,15 +11,14 @@ class CleverTemplate:
     def __init__(self, path):
         self.path = path
 
-    def CreateTemplate(self, data, customname=None, forcename=False, customdir=None, forcedir=False):
+    def CreateTemplate(self, data, customname=None, forcename=False, customdir=None, forcedir=True, addphrase=False):
         if customname == None:
             customname = self.file
         if customdir == None:
-            customdir = self.directory
-        print(customname, customdir, forcename, forcedir)
-        savepath = CleverTemplate.generate_save_path(customdir, customname, forcename, forcedir)
+            customdir = os.path.join(self.directory, CleverTemplate.OutputFolder)
+        savepath = CleverTemplate.generate_save_path(customdir, customname, forcename, forcedir, addphrase)
         open(savepath, "w+").write(CleverTemplate.render_template(self.path, data))
-        return True
+        return savepath
 
     @property
     def path(self):
@@ -30,14 +30,17 @@ class CleverTemplate:
             self.directory, self.file = os.path.split(fullpath)
 
     @staticmethod
-    def generate_save_path(outputpath, file, forcename=False, forcedir=False):
-        outputstatus = CleverTemplate.dir_exists(outputpath, forcedir=forcedir)
+    def generate_save_path(outputpath, file, forcename=False, forcedir=True, addphrase=False):
+        outputstatus = CleverTemplate.dir_exists(outputpath, forcedir)
         if outputstatus:
             if forcename == False:
                 n = ""
                 while True:
                     file = "{0}{2}.{1}".format(*file.rsplit('.', 1) + [n])
-                    fullpath = os.path.join(outputpath, CleverTemplate.NameExtendPhrase + "-" + file)
+                    if addphrase:
+                        fullpath = os.path.join(outputpath, CleverTemplate.NameExtendPhrase + "-" + file)
+                    else:
+                        fullpath = os.path.join(outputpath, file)
                     try:
                         CleverTemplate.file_exists(fullpath)
                     except PathMustBe:
@@ -75,5 +78,10 @@ class CleverTemplate:
         else:
             raise PathMustBe(filepath, mustbetype="file")
 
+    @classmethod
+    def set_NameExtendPhrase(cls, value):
+        cls.NameExtendPhrase = value
 
-CleverTemplate("e:/MyWork/CleverTemplateCodeRemaster/Template.py").CreateTemplate("x", customdir="./xd", forcedir=True)
+    @classmethod
+    def set_OutputFolder(cls, value):
+        cls.OutputFolder = value
