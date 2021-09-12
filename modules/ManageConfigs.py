@@ -1,3 +1,4 @@
+from traceback import print_exc
 from .ManageTemplates import CleverTemplate
 from genericpath import isfile
 from ntpath import join
@@ -40,11 +41,10 @@ class CleverConfig:
                             try:
                                 if CleverConfig.parameterobj[currentparam[0]]['type'] == type(currentcustomparam) and currentcustomparam != "":
                                     params[param] = currentcustomparam
+                                elif len(currentparam) > 1 and CleverConfig.parameterobj[currentparam[0]]['type'] == type(currentparam[1]):
+                                    params[param] = currentparam[1]
                                 elif forcedefparval:
-                                    if len(currentparam) > 1:
-                                        params[param] = currentparam[1]
-                                    else:
-                                        params[param] = CleverConfig.parameterobj[currentparam[1]]['defval']
+                                    params[param] = CleverConfig.parameterobj[currentparam[1]]['defval']
                                 else:
                                     raise CustomParameterValue(currentcustomparam, currentparam[0], "custom parameter value", "does not match with the actual config file parameter type: ")
                             except Exception as e:
@@ -81,11 +81,10 @@ class CleverConfig:
         outputdata = {}
         maindir = pathlib.Path(self.configpath).parent
         for file in data:
-            fullfilepath = os.path.join(maindir, file)
-            if os.path.isfile(fullfilepath):
+            if os.path.isfile(file):
                 outputdata[file] = data[file]
             else:
-                self.skippedfiles.append(fullfilepath)
+                self.skippedfiles.append(file)
         if outputdata != {}:
             return outputdata
         else:

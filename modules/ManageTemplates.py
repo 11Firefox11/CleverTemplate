@@ -36,11 +36,13 @@ class CleverTemplate:
             if forcename == False:
                 n = ""
                 while True:
-                    file = "{0}{2}.{1}".format(*file.rsplit('.', 1) + [n])
+                    print(n)
+                    custfile = "{0}{2}.{1}".format(*file.rsplit('.', 1) + [n])
+                    print(file)
                     if addphrase:
-                        fullpath = os.path.join(outputpath, CleverTemplate.NameExtendPhrase + "-" + file)
+                        fullpath = os.path.join(outputpath, CleverTemplate.NameExtendPhrase + "-" + custfile)
                     else:
-                        fullpath = os.path.join(outputpath, file)
+                        fullpath = os.path.join(outputpath, custfile)
                     try:
                         CleverTemplate.file_exists(fullpath)
                     except PathMustBe:
@@ -57,7 +59,7 @@ class CleverTemplate:
     def render_template(path, data):
         if CleverTemplate.file_exists(path):
             template = Template(str(open(path, "r").read()))
-            return template.render(data=data)
+            return template.render(ctdata=data)
 
     @staticmethod
     def dir_exists(directory, forcedir=False):
