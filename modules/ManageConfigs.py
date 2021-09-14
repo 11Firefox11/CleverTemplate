@@ -70,7 +70,7 @@ class CleverConfig:
                     else:
                         raise ParameterOptions(options, message=f"parameter does not have default value")
             else:
-                raise ParameterOptions(options, message=f"{options[0]} is not a valid parameter type")
+                raise ParameterOptions(options, message=f"'{options[0]}' is not a valid parameter type")
         else:
             raise ParameterOptions(options, message="parameter options can't be empty")
         return options
@@ -99,7 +99,7 @@ class CleverConfig:
         canbepaths = [self.path, os.path.join(self.path, CleverConfig.ConfigFile)]
         for canbepath in canbepaths:
             if os.path.isfile(canbepath):
-                return canbepath
+                return os.path.abspath(canbepath)
         raise PathMustBe(self.path, "path", mustbetype=f"directory that contains the {CleverConfig.ConfigFile} file, or must point directly on the file")
 
     @configpath.setter

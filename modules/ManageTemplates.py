@@ -36,9 +36,7 @@ class CleverTemplate:
             if forcename == False:
                 n = ""
                 while True:
-                    print(n)
                     custfile = "{0}{2}.{1}".format(*file.rsplit('.', 1) + [n])
-                    print(file)
                     if addphrase:
                         fullpath = os.path.join(outputpath, CleverTemplate.NameExtendPhrase + "-" + custfile)
                     else:
