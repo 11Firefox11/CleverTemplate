@@ -1,7 +1,7 @@
-import os, argparse, pathlib, traceback, sys
-from modules.ManageConfigs import CleverConfig
-from modules.ManageTemplates import CleverTemplate
-from modules.CtExceptions import *
+import os, argparse, pathlib, sys, traceback
+from ManageConfigs import CleverConfig
+from ManageTemplates import CleverTemplate
+from CtExceptions import *
 
 class Main:
 
@@ -29,7 +29,7 @@ class Main:
                     argdict["default"] = None
                 commandparse.add_argument(arg, help=argdict["help"], default=argdict["default"])
             commandparse.add_argument('--help', '-h', action='help', default=argparse.SUPPRESS, help=f"Show help about this command ({command}).")
-            commandparse.add_argument('--version','-v', action='version',version=f"Command '{command}' version: {self.Commands[command]['version']}", help="Shows commands's version number.")
+            commandparse.add_argument('--version','-v', action='version',version=f"{Main.OutputTypes['info']}Command '{command}' version: {self.Commands[command]['version']}", help="Shows commands's version number.")
             commandparse.set_defaults(func=commanddict['func'])
         parser.add_argument('--version','-v', action='version',version=f"Clever Template version: {Main.Version}", help="Shows app's version number.")
         parser.add_argument('--help','-h', action='help', default=argparse.SUPPRESS, help='Shows help about the app.')
@@ -47,11 +47,9 @@ class Main:
                 elif "jinja2" in exc_type:
                     self.Output("error", DefaultCleverTemplateException(self.currfile, "template file",f"Bad Jinja2 syntax. Check your variables, and the default syntaxes. {Main.DefHelpInfoText} https://jinja.palletsprojects.com/en/3.0.x/templates/"))
                 else:
-                    # print(exc_type)
-                    # traceback.print_exc()
                     self.Output("error", e)
+                traceback.print_exc()
                 self.Output("info", Main.DefEpilog)
-
 
     def create(self, args):
         self.config = CleverConfig(args.path)
@@ -98,5 +96,4 @@ class Main:
         if outputtype in Main.OutputTypes:
             print(text, end=endprint)
 
-if __name__ == "__main__":
-    Main()
+Main()

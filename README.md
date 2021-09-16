@@ -24,10 +24,10 @@
 ## Introduction
 Clever Template is a console application, which uses a templating engine, Jinja2. Clever Template is simply just an app, what can input variables into Jinja2 typed templates.  
 In the app, you have to set your own variables/parameters, what should be defined by the user when the user wants to create a new template. For this reason, the app requires a JSON file. The JSON file will contain wich file should have what variable, with what type and what default value. By that config JSON file, the app will know what variables can be inputed into which template file, and it will request those variables when the user is creating  template.  
-You can see examples about all types of topics in the [examples]() folder.  
+You can see examples about all types of topics in the [examples](./examples) folder.  
 
 ## Install
-Download the `CleverTemplate.exe` file from a release. [Github - Clever Template Releases](https://github.com/11Firefox11/CleverTemplate/releases)
+Download the code from a release. [Github - Clever Template Releases](https://github.com/11Firefox11/CleverTemplate/releases)
 
 ## App usage
 Open a terminal window on your device, and run CleverTemplate.  
@@ -79,7 +79,7 @@ The string must match exactly with the three variable types. Etc. it can't be `T
 ###### `DEFAULTVALUE`
 This is a value, matched to the variable object's type. This is the second index of the array inside its variable object, this can be defined, but it is not a must. 
 ## Examples
-See the [examples]() folder for some easy examples, also to get some idea about how to use the app.
+See the [examples](./examples) folder for some easy examples, also to get some idea about how to use the app.
 ## Releases
 This app is kind of in an early phase. Clever Template will be growing hopefully, new updates will be coming in the future.
 

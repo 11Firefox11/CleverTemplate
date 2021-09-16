@@ -1,9 +1,5 @@
-from traceback import print_exc
-from .ManageTemplates import CleverTemplate
-from genericpath import isfile
-from ntpath import join
+from CtExceptions import *
 import os, json, pathlib
-from .CtExceptions import *
 
 class CleverConfig:
 
@@ -81,10 +77,11 @@ class CleverConfig:
         outputdata = {}
         maindir = pathlib.Path(self.configpath).parent
         for file in data:
-            if os.path.isfile(file):
-                outputdata[file] = data[file]
+            fullfile = os.path.join(maindir, file)
+            if os.path.isfile(fullfile):
+                outputdata[fullfile] = data[file]
             else:
-                self.skippedfiles.append(file)
+                self.skippedfiles.append(fullfile)
         if outputdata != {}:
             return outputdata
         else:
