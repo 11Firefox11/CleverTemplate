@@ -1,12 +1,12 @@
 import os, argparse, pathlib, sys, traceback
-from ManageConfigs import CleverConfig
-from ManageTemplates import CleverTemplate
-from CtExceptions import *
+from modules.ManageConfigs import CleverConfig
+from modules.ManageTemplates import CleverTemplate
+from modules.CtExceptions import *
 
 class Main:
 
     Mainpath = os.path.dirname(os.path.realpath(__file__))
-    Version = "1.0"
+    Version = "1.0.0"
     OutputTypes = {"info":"INFO: ", "input":"INPUT: ", "error": "ERROR: "}
     DefHelpInfoText = "For help in this curtain topic, visit:"
     DefEpilog = "For more information and help, go to the app's github page: https://github.com/11Firefox11/CleverTemplate."
@@ -14,7 +14,7 @@ class Main:
     def __init__(self):
         self.lastprintlen = 0
         self.Commands = {
-        "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template.", "func":Main.create, "version":"1.0"}}
+        "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template.", "func":Main.create, "version":"1.0.0"}}
         self.InitArgparse()
 
     def InitArgparse(self):
@@ -48,7 +48,6 @@ class Main:
                     self.Output("error", DefaultCleverTemplateException(self.currfile, "template file",f"Bad Jinja2 syntax. Check your variables, and the default syntaxes. {Main.DefHelpInfoText} https://jinja.palletsprojects.com/en/3.0.x/templates/"))
                 else:
                     self.Output("error", e)
-                traceback.print_exc()
                 self.Output("info", Main.DefEpilog)
 
     def create(self, args):

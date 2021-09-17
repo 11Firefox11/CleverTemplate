@@ -1,6 +1,6 @@
 <h1 align="center" id="CleverTemplate">Clever Template</h1>
 
-<p align="center">Console app for making simple <a href="https://jinja.palletsprojects.com/en/3.0.x/templates/" target="blank_">Jinja2</a> based templates. </p>
+<h4 align="center">Console app for making simple <a href="https://jinja.palletsprojects.com/en/3.0.x/templates/" target="blank_">Jinja2</a> based templates. </h4>
 <p align="center"><img src="./assets/icon_ct.jpg" height="175"></p>
 
 - [Introduction](#introduction)

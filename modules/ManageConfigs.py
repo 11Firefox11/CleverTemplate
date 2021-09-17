@@ -1,6 +1,5 @@
-from CtExceptions import *
+from .CtExceptions import *
 import os, json, pathlib
-
 class CleverConfig:
 
     ConfigFile = "ct-config.json"
