@@ -1,0 +1,6 @@
+{
+    "hello.html":{
+        "title":["text", "The title"],
+        "content":["text", "Some content"]
+    }
+}
