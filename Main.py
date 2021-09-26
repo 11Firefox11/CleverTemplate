@@ -5,14 +5,12 @@ from modules.CtExceptions import *
 
 class Main:
 
-    Mainpath = os.path.dirname(os.path.realpath(__file__))
     Version = "1.0.0"
     OutputTypes = {"info":"INFO: ", "input":"INPUT: ", "error": "ERROR: "}
     DefHelpInfoText = "For help in this curtain topic, visit:"
     DefEpilog = "For more information and help, go to the app's github page: https://github.com/11Firefox11/CleverTemplate."
 
     def __init__(self):
-        self.lastprintlen = 0
         self.Commands = {
         "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template.", "func":Main.create, "version":"1.0.0"}}
         self.InitArgparse()
@@ -95,4 +93,5 @@ class Main:
         if outputtype in Main.OutputTypes:
             print(text, end=endprint)
 
-Main()
+if __name__ == "__main__":
+    Main()
