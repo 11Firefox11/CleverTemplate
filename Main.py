@@ -1,4 +1,4 @@
-import os, argparse, pathlib, sys, traceback
+import os, argparse, pathlib, sys, json
 from modules.ManageConfigs import CleverConfig
 from modules.ManageTemplates import CleverTemplate
 from modules.CtExceptions import *
@@ -12,7 +12,7 @@ class Main:
 
     def __init__(self):
         self.Commands = {
-        "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template.", "func":Main.create, "version":"1.0.0"}}
+        "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}, "--customdata":{"help":"Specify a path to a custom data as input (json file)."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template.", "func":Main.create, "version":"1.0.0"}}
         self.InitArgparse()
 
     def InitArgparse(self):
@@ -67,15 +67,25 @@ class Main:
         self.Output("info", "Scanning done.")
         customdata = {}
         if data:
-            for file in data:
-                self.currfile = file
-                self.Output("info", f"Editing '{file}' parameters: ")
-                params = {}
-                for param in data[file]:
-                    self.Output("input", f"Parameter: '{param}', type: '{data[file][param][0]}', default value: '{data[file][param][1]}:': ", "")
-                    params[param] =  input()
-                customdata[file] = params
-                self.Output("info", f"Finished with '{file}'.")
+            if args.customdata == None:
+                for file in data:
+                    self.currfile = file
+                    self.Output("info", f"Editing '{file}' parameters: ")
+                    params = {}
+                    for param in data[file]:
+                        self.Output("input", f"Parameter: '{param}', type: '{data[file][param][0]}', default value: '{data[file][param][1]}:': ", "")
+                        try:
+                            params[param] =  input()
+                        except:
+                            exit()
+                    customdata[file] = params
+                    self.Output("info", f"Finished with '{file}'.")
+            else:
+                if os.path.isfile(args.customdata):
+                    customdata = json.load(open(args.customdata)) # Here, check for files, and do their full path versio
+                else:
+                    raise PathMustBe(args.customdata, mustbetype="config file")
+            print(customdata) 
             customdata = self.config.ConfigParameters(checkparams=customdata)
             for file in customdata:
                 self.currfile = file

@@ -32,9 +32,16 @@ class CleverConfig:
                     else:
                         if file in checkparams and param in checkparams[file]:
                             currentparam = data[file][param]
-                            currentcustomparam = checkparams[file][param]
+                            currtype = CleverConfig.parameterobj[currentparam[0]]['type']
                             try:
-                                if CleverConfig.parameterobj[currentparam[0]]['type'] == type(currentcustomparam) and currentcustomparam != "":
+                                currentcustomparam = currtype(checkparams[file][param])
+                            except:
+                                currentcustomparam = checkparams[file][param]
+                            try:
+                                if currtype == type(currentcustomparam) and currentcustomparam != "":
+                                    if currtype == float:
+                                        if float(currentcustomparam).is_integer():
+                                            currentcustomparam = int(currentcustomparam)
                                     params[param] = currentcustomparam
                                 elif len(currentparam) > 1 and CleverConfig.parameterobj[currentparam[0]]['type'] == type(currentparam[1]):
                                     params[param] = currentparam[1]
