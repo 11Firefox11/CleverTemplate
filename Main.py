@@ -1,4 +1,4 @@
-import os, argparse, pathlib, sys, json
+import os, argparse, pathlib, sys, json, copy
 from modules.ManageConfigs import CleverConfig
 from modules.ManageTemplates import CleverTemplate
 from modules.CtExceptions import *
@@ -9,6 +9,7 @@ class Main:
     OutputTypes = {"info":"INFO: ", "input":"INPUT: ", "error": "ERROR: "}
     DefHelpInfoText = "For help in this curtain topic, visit:"
     DefEpilog = "For more information and help, go to the app's github page: https://github.com/11Firefox11/CleverTemplate."
+    DefInputCommands = {"ml":["!ml", "!multiline", "!multi", "multipleline"], "exit":["!q", "!quit", "!exit", "!qml", "!quitml"]}
 
     def __init__(self):
         self.Commands = {
@@ -73,19 +74,42 @@ class Main:
                     self.Output("info", f"Editing '{file}' parameters: ")
                     params = {}
                     for param in data[file]:
+                        self.Output("info", "Type: `!ml` for multi line input, and type `!q` for exiting multi line input mode!")
                         self.Output("input", f"Parameter: '{param}', type: '{data[file][param][0]}', default value: '{data[file][param][1]}:': ", "")
-                        try:
-                            params[param] =  input()
-                        except:
-                            exit()
+                        multipleline = False
+                        inputdata = ""
+                        while True:
+                            try:
+                                currinput =  input()
+                            except:
+                                exit()
+                            if currinput in Main.DefInputCommands["ml"] and multipleline == False:
+                                multipleline = True
+                            elif currinput in Main.DefInputCommands["exit"] and multipleline == True:
+                                currinput = ""
+                                multipleline = False
+                            if multipleline == False:
+                                if len(inputdata) > 0 and inputdata[-1] == "\n":
+                                    inputdata = inputdata[:-1]
+                                else:
+                                    inputdata += currinput
+                                params[param] = inputdata
+                                break
+                            elif currinput != "!ml":
+                                inputdata += currinput + "\n"
                     customdata[file] = params
                     self.Output("info", f"Finished with '{file}'.")
             else:
                 if os.path.isfile(args.customdata):
-                    customdata = json.load(open(args.customdata)) # Here, check for files, and do their full path versio
+                    customdata = json.load(open(args.customdata))
+                    data = {}
+                    for file in customdata:
+                        fullcurrpath = os.path.join(pathlib.Path(self.config.path).parent, file)
+                        if CleverTemplate.file_exists(fullcurrpath):
+                            data[fullcurrpath] = copy.deepcopy(customdata[file])
+                    customdata = copy.deepcopy(data)
                 else:
                     raise PathMustBe(args.customdata, mustbetype="config file")
-            print(customdata) 
             customdata = self.config.ConfigParameters(checkparams=customdata)
             for file in customdata:
                 self.currfile = file
@@ -101,7 +125,7 @@ class Main:
     def Output(outputtype, text, endprint="\n"):
         text = Main.OutputTypes[outputtype]+ str(text)
         if outputtype in Main.OutputTypes:
-            print(text, end=endprint)
+            print(str(text), end=endprint)
 
 if __name__ == "__main__":
     Main()
