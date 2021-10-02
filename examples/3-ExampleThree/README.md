@@ -9,7 +9,7 @@ This example is about creating a simple email template. Beginning from setting u
 ### Our goal
 We are going to create a simple txt file, what will conatin a sample text, about what work we have done, and how much hour it was taking for us to do that work. So there will be a name for our work, and there will be a time period. For our first email text, we for example done work named by `Annual Report` and it took us `18` hours to do.
 ### Creating the config file
-First we have to create the ct config file, by the name and extension what Clever Template is currently requiring. So we created the `ct-config.json`.
+First we have to create the ct config file, by the name and extension what Clever Template requires currently. So we created the `ct-config.json`.
   
 Now, we have to add data to the file, by the [main syntax](../../README.md#main-sample-syntax-for-config-file).  
   

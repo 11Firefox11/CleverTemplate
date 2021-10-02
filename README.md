@@ -33,7 +33,7 @@
 
 ## Introduction
 Clever Template is a console application, which uses a templating engine, Jinja2. Clever Template is simply just an app, what can input variables into Jinja2 typed templates. Templates can be HTML files, CSS files, txt files, anything.  
-In the app, you have to set your own variables/parameters, what should be defined by the user when the user wants to create a new template. For this reason, the app requires a JSON file. The JSON file will contain which file should have what variable, with what type and what default value. By that config JSON file, the app will know what variables can be inputted into which template file, and it will request those variables when the user is creating  template.  
+In the app, you have to set your own variables/parameters, what should be defined by the user when the user wants to create a new template. For this reason, the app requires a JSON file. The JSON file will contain which file should have what variable, with what type and what default value. By that config JSON file, the app will know what variables can be inputted into which template file and it will request those variables when the user is creating  template.  
 You can see examples about all types of topics in the [examples](./examples) folder.  
 
 ## Install
@@ -41,7 +41,7 @@ Download the code or the `CleverTemplate.exe` file from a release. [Github - Cle
 
 ## App usage
 Open a terminal window on your device, and run CleverTemplate.  
-If you simply run CleverTemplate, it will give a help description about the app, and its commands, arguments. You can interact with CleverTemplate by [commands](#commands).  
+If you simply run CleverTemplate, it will give a help description about the app and its commands, arguments. You can interact with CleverTemplate by [commands](#commands).  
 For the full app usage, and for better understanding, please consider reading: [Jinja2 templating](#about-jinja2-templating) and [JSON formatting](#about-json-formatting).
 ### Commands 
 Clever Template uses simply syntaxes for commands. A command usually have arguments. There are positional arguments that must be in the command, and there are arguments which are optional, it means that it is not a must to be in the command. There are some [default optional arguments](#default-optional-arguments).
@@ -89,9 +89,9 @@ This is a string, what is a path to a existing file. The variables inside this p
 This is a string, what can be anything, this is simply just a variable name. This variable will be passed into the file too, if it will be given a value. This is the name of the variable object.
 ###### `VARIABLETYPE`
 This is a string, what can be three things: 
-- `text`: this is simply just a text, string, it can have any value what can be changed into a text
-- `number`: this is a number, can be any type of number, a whole number or not, it does not matter
-- `boolean`: this is simply just a `true` or `false` variable type   
+- `text`: this is simply just a text, string, it can have any value what can be changed into a text.
+- `number`: this is a number, can be any type of number, a whole number or not, it does not matter.
+- `boolean`: this is simply just a `true` or `false` variable type.
 
 The string must match exactly with the three variable types. Etc. it can't be `TEXT` or `Num`, all its characters should be with small letters, and the type should be fully written out. This is the first index of the array inside its variable object, this must be defined.
 ###### `DEFAULTVALUE`
@@ -99,7 +99,7 @@ This is a value, matched to the variable object's type. This is the second index
 ### Custom input data file
 As the config file, Clever Template has its own simple config JSON syntax, but the file name can be anything. This syntax is very important. 
 #### Creating a custom input data file
-The file can be named anything, and can have any file extension, as long as it has json formatted in it. Create a file, then just open it with any text editor and start editing it.
+The file can be named anything and can have any file extension, as long as it has json formatted in it. Create a file, then just open it with any text editor and start editing it.
 #### Syntax, formatting
 The custom input data file is simple, it is easy to set up. The file must contain JSON syntax. It has to conatin a main object, inside it keys named as the template files, refeering from the [config file](#config-file). Inside the template file keys, there should be variable keys, with their custom value. The variable keys should contain a special value, what matches with the [config file variables](#variable), what will be matched with it.
 ##### Main sample, syntax for custom input data file
@@ -121,7 +121,7 @@ This is the same as it is in the [config file](#path_to_templatefile). This shou
 ###### `VARIABLE_CF`
 This is also the same as it is in the [config file](#variable). This should also refeer the same variable as in the config file it will be matched with.
 ###### `VARIABLEVALUE`
-This can be anything, this is the value of the variable. The variable value type should match with the matching [config file variabletype](#variabletype). This special value will be inputed into a variable what will be inputed into the template it is in.
+This can be anything this is the value of the variable. The variable value type should match with the matching [config file variabletype](#variabletype). This special value will be inputed into a variable what will be inputed into the template it is in.
 ## About Jinja2 templating
 Jinja is a fast, expressive, extensible templating engine. Special placeholders in the template allow writing code similar to Python syntax.  
 The template files in Clever Template must include [Jinja2 syntax](https://jinja.palletsprojects.com/en/3.0.x/templates/), if the user wants to pass variables inside the template code.  

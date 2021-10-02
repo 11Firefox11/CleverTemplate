@@ -9,7 +9,7 @@ This example is about creating a simple template. Beginning from setting up a [t
 ### Our goal
 We are going to create a simple html template file, what has a header with a title, and a paragraph with a content. Then we want to create a final html file, with the title of `Hello templates`, and a content of `This was created with Clever Template`. 
 ### Creating the config file
-First we have to create the ct config file, by the name and extension what Clever Template is currently requiring. So we created the `ct-config.json`.
+First we have to create the ct config file, by the name and extension what Clever Template requires currently. So we created the `ct-config.json`.
   
 Now, we have to add data to the file, by the [main syntax](../../README.md#main-sample-syntax-for-config-file).  
   
