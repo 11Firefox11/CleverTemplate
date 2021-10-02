@@ -1,5 +1,4 @@
 import os
-from traceback import print_exc
 from jinja2 import Template
 from .CtExceptions import *
 

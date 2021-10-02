@@ -5,7 +5,7 @@ from modules.CtExceptions import *
 
 class Main:
 
-    Version = "1.0.0"
+    Version = "1.1.0"
     OutputTypes = {"info":"INFO: ", "input":"INPUT: ", "error": "ERROR: "}
     DefHelpInfoText = "For help in this curtain topic, visit:"
     DefEpilog = "For more information and help, go to the app's github page: https://github.com/11Firefox11/CleverTemplate."
