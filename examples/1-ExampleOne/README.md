@@ -42,4 +42,4 @@ It will just print out the version of the command.
 INFO: Command 'create' version: 1.0
 ```
 ---
-> In this document, console based examples, '**@consoleapp:~$**' will be referenced as the main user, or current directory in a console, the main program (Clever Template), will be referenced as '**CleverTemplate**.  
+> In this document, console based examples, '**@consoleapp:~$**' will be referenced as the main user, or/and current directory in a console, the main program (Clever Template), will be referenced as '**CleverTemplate**.  

@@ -12,7 +12,7 @@
   - [Config file](#config-file)
     - [Create a config file](#create-a-config-file)
     - [Syntax, formatting](#syntax-formatting)
-        - [Main sample, syntax](#main-sample-syntax)
+        - [Main sample, syntax for config file](#main-sample-syntax-for-config-file)
       - [Syntax keys](#syntax-keys)
         - [`PATH_TO_TEMPLATEFILE`](#path_to_templatefile)
         - [`VARIABLE`](#variable)
@@ -21,7 +21,7 @@
   - [Custom input data file](#custom-input-data-file)
     - [Creating a custom input data file](#creating-a-custom-input-data-file)
     - [Syntax, formatting](#syntax-formatting-1)
-      - [Main sample, syntax](#main-sample-syntax-1)
+      - [Main sample, syntax for custom input data file](#main-sample-syntax-for-custom-input-data-file)
       - [Syntax keys](#syntax-keys-1)
         - [`PATH_TO_TEMPLATEFILE_CF`](#path_to_templatefile_cf)
         - [`VARIABLE_CF`](#variable_cf)
@@ -32,7 +32,7 @@
 - [Releases](#releases)
 
 ## Introduction
-Clever Template is a console application, which uses a templating engine, Jinja2. Clever Template is simply just an app, what can input variables into Jinja2 typed templates.  
+Clever Template is a console application, which uses a templating engine, Jinja2. Clever Template is simply just an app, what can input variables into Jinja2 typed templates. Templates can be HTML files, CSS files, txt files, anything.  
 In the app, you have to set your own variables/parameters, what should be defined by the user when the user wants to create a new template. For this reason, the app requires a JSON file. The JSON file will contain which file should have what variable, with what type and what default value. By that config JSON file, the app will know what variables can be inputted into which template file, and it will request those variables when the user is creating  template.  
 You can see examples about all types of topics in the [examples](./examples) folder.  
 
@@ -51,7 +51,7 @@ After the app scanned the config file, it will ask for input from the terminal, 
 The user can specify a [custom data file](#custom-input-data-file) too, that will be used instead of asking in data for all variables in the terminal.  
 If any input value does not match with its variable type, it will be replaced by the default variable value.  
 - #### Arguments:
-`path`: This is a positional argument, it must point to a directory what conains the [config file](#config-file), or point directly to the config file.
+`path`: This is a positional argument, it must point to a directory what conains the [config file](#config-file), or point directly to the config file. It can be both relative and absolute path.  
 `--customdata CUSTOMDATA`: This is an optional argument, `CUSTOMDATA` refers to be replaced with a path, pointing to a [json file](#custom-input-data-file), what contains the custom data that should be passed in, as variables.
 - #### Command usage
 ```console
@@ -69,7 +69,7 @@ Clever Template has its own simple config JSON file name, and syntax. This synta
 The config file must be `ct-config.json`. Create a config file, then just open it with any text editor and start editing it.
 #### Syntax, formatting
 The config file is simple, it is easy to set up. The JSON file should keys, named to the template file name. Inside the template key, there should be variable keys, with their custom names. The variable keys should contain an array (list), where the first index should be a variable type, what must be defined, and on the second index, it can be defined, what the default value of the variable should be.
-###### Main sample, syntax
+###### Main sample, syntax for config file
 ```js 
 {
     PATH_TO_TEMPLATEFILE-1 : {
@@ -102,7 +102,7 @@ As the config file, Clever Template has its own simple config JSON syntax, but t
 The file can be named anything, and can have any file extension, as long as it has json formatted in it. Create a file, then just open it with any text editor and start editing it.
 #### Syntax, formatting
 The custom input data file is simple, it is easy to set up. The file must contain JSON syntax. It has to conatin a main object, inside it keys named as the template files, refeering from the [config file](#config-file). Inside the template file keys, there should be variable keys, with their custom value. The variable keys should contain a special value, what matches with the [config file variables](#variable), what will be matched with it.
-##### Main sample, syntax
+##### Main sample, syntax for custom input data file
 ```js
 {
     PATH_TO_TEMPLATEFILE_CF-1 : {
@@ -125,14 +125,15 @@ This can be anything, this is the value of the variable. The variable value type
 ## About Jinja2 templating
 Jinja is a fast, expressive, extensible templating engine. Special placeholders in the template allow writing code similar to Python syntax.  
 The template files in Clever Template must include [Jinja2 syntax](https://jinja.palletsprojects.com/en/3.0.x/templates/), if the user wants to pass variables inside the template code.  
-Variables will be passed in a dict named `ctdata`, so to use the custom variables the user have to refer them as `ctdata.VARIABLE`.
+Variables will be passed in a dict named `ctdata`, so to use the custom variables the user have to refer them as `ctdata.VARIABLE`.  
+To read more about Jinja2 templating, visit: [jinja.palletsprojects.com](https://jinja.palletsprojects.com/en/3.0.x/templates/).
 ## About JSON formatting
 JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write.  
 There are objects, keys/values in this format. For the full use of Clever Template, the user needs to use this JSON format in custom files.  
 Objects are what surrounded by curly braces `{}`.  
 Objects contain keys/values in pairs.  
 Keys and values are separated by a colon.  
-To read more about JSON, visit: [json.org](https://www.json.org/json-en.html).
+To read more about JSON formatting, visit: [json.org](https://www.json.org/json-en.html).
 ## Examples
 See the [examples](./examples) folder for some easy examples, also to get some idea about how to use the app.
 ## Releases

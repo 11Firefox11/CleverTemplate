@@ -1,0 +1,5 @@
+Dear David,
+I have done my work {{ ctdata.work_name }}, it only took me about {{ ctdata.hours }} hours to make. I am sending the {{ ctdata.work_name }} files with this email!
+
+I look forward to receiving your reply.
+Tömő Viktor

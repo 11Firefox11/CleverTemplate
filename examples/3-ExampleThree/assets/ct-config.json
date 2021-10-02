@@ -1,0 +1,6 @@
+{
+    "work_email.txt":{
+        "work_name":["text"],
+        "hours":["number"]
+    }
+}
