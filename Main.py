@@ -13,7 +13,7 @@ class Main:
 
     def __init__(self):
         self.Commands = {
-        "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}, "--customdata":{"help":"Specify a path to a custom data as input (json file)."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template.", "func":Main.create, "version":"1.0.0"}}
+        "create":{"args": {"path":{"help":"Specify path to the ct-config.json."}, "--customdata":{"help":"Specify a path to a custom data as input (json file)."}},"desc":"Create a template, by giving the path of the ct-config.json.", "help":"Create template.", "func":Main.create, "version":"1.1.0"}}
         self.InitArgparse()
 
     def InitArgparse(self):
