@@ -6,10 +6,10 @@ from modules.CtExceptions import *
 class Main:
 
     Version = "1.1.0"
-    OutputTypes = {"info":"INFO: ", "input":"INPUT: ", "error": "ERROR: "}
+    OutputTypes = {"info":"INFO", "input":"INPUT", "error": "ERROR"}
     DefHelpInfoText = "For help in this curtain topic, visit:"
     DefEpilog = "For more information and help, go to the app's github page: https://github.com/11Firefox11/CleverTemplate."
-    DefInputCommands = {"ml":["!ml", "!multiline", "!multi", "multipleline"], "exit":["!q", "!quit", "!exit", "!qml", "!quitml"]}
+    DefInputCommands = {"!ml":"multipleline == False and listinput == False", "!qml":"multipleline == True", "!qlist":"listinput == True"}
 
     def __init__(self):
         self.Commands = {
@@ -74,29 +74,53 @@ class Main:
                     self.Output("info", f"Editing '{file}' parameters: ")
                     params = {}
                     for param in data[file]:
-                        self.Output("info", "Type: `!ml` for multi line input, and type `!q` for exiting multi line input mode!")
-                        self.Output("input", f"Parameter: '{param}', type: '{data[file][param][0]}', default value: '{data[file][param][1]}:': ", "")
+                        paramtype = data[file][param][0]
+                        listinput = False
                         multipleline = False
-                        inputdata = ""
+                        if data[file][param][0] == "list":
+                            self.Output("info", "Type: `!qlist` for quiting list input.")
+                            listinput = True
+                        else:
+                            self.Output("info", "Type: `!ml` for multi line input, and type `!qml` for exiting multi line input mode!")
+                        self.Output("info", f"Parameter: '{param}', type: '{paramtype}', default value: '{data[file][param][1]}'")
+                        if listinput:
+                            inputdata = []
+                            plusprint = " <LIST>"
+                        else:
+                            inputdata = ""
+                            plusprint = ""
                         while True:
+                            self.Output("input", "", endprint="", aftertype=plusprint)
                             try:
                                 currinput =  input()
                             except:
                                 exit()
-                            if currinput in Main.DefInputCommands["ml"] and multipleline == False:
-                                multipleline = True
-                            elif currinput in Main.DefInputCommands["exit"] and multipleline == True:
-                                currinput = ""
-                                multipleline = False
-                            if multipleline == False:
-                                if len(inputdata) > 0 and inputdata[-1] == "\n":
-                                    inputdata = inputdata[:-1]
-                                else:
-                                    inputdata += currinput
+                            for command in Main.DefInputCommands:
+                                if currinput == command and eval(Main.DefInputCommands[command]):
+                                    if "ml" in command:
+                                        multipleline = not eval(Main.DefInputCommands[command].split(" ")[-1])
+                                    else:
+                                        listinput = False
+                                    currinput = ""
+                            if multipleline == True:
+                                plusprint = " <MULTI LINE>"
+                            if multipleline == False and listinput == False:
+                                if currinput != "":
+                                    if len(inputdata) > 0 and inputdata[-1] == "\n":
+                                        inputdata = inputdata[:-1]
+                                    else:
+                                        if type(inputdata) != list:
+                                            inputdata += currinput
+                                        else:
+                                            inputdata.append(currinput)
                                 params[param] = inputdata
                                 break
-                            elif currinput != "!ml":
-                                inputdata += currinput + "\n"
+                            else:
+                                if currinput != "":
+                                    if multipleline == True:
+                                        inputdata += currinput + "\n"
+                                    elif listinput == True:
+                                        inputdata.append(currinput)
                     customdata[file] = params
                     self.Output("info", f"Finished with '{file}'.")
             else:
@@ -109,7 +133,7 @@ class Main:
                             data[fullcurrpath] = copy.deepcopy(customdata[file])
                     customdata = copy.deepcopy(data)
                 else:
-                    raise PathMustBe(args.customdata, mustbetype="config file")
+                    raise PathMustBe(args.customdata, mustbetype="custom data file")
             customdata = self.config.ConfigParameters(checkparams=customdata)
             for file in customdata:
                 self.currfile = file
@@ -122,8 +146,8 @@ class Main:
             self.Output("error", ConfigFileSyntaxError(self.config.configpath, message=f"Nothing to do, all parameters or/and files skipped."))
 
     @staticmethod
-    def Output(outputtype, text, endprint="\n"):
-        text = Main.OutputTypes[outputtype]+ str(text)
+    def Output(outputtype, text, endprint="\n", aftertype=""):
+        text = f"{Main.OutputTypes[outputtype]}{aftertype}: {str(text)}"
         if outputtype in Main.OutputTypes:
             print(str(text), end=endprint)
 

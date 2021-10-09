@@ -7,6 +7,7 @@ class CleverConfig:
     "text": {"type": str, "defval": "None"},
     "number": {"type": float, "defval": 1},
     "boolean": {"type": bool, "defval": True},
+    "list":{"type":list, "defval":[1,2,3]}
     }
 
     def __init__(self, path):
