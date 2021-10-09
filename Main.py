@@ -5,7 +5,7 @@ from modules.CtExceptions import *
 
 class Main:
 
-    Version = "1.1.0"
+    Version = "1.2.0"
     OutputTypes = {"info":"INFO", "input":"INPUT", "error": "ERROR"}
     DefHelpInfoText = "For help in this curtain topic, visit:"
     DefEpilog = "For more information and help, go to the app's github page: https://github.com/11Firefox11/CleverTemplate."
@@ -28,7 +28,7 @@ class Main:
                     argdict["default"] = None
                 commandparse.add_argument(arg, help=argdict["help"], default=argdict["default"])
             commandparse.add_argument('--help', '-h', action='help', default=argparse.SUPPRESS, help=f"Show help about this command ({command}).")
-            commandparse.add_argument('--version','-v', action='version',version=f"{Main.OutputTypes['info']}Command '{command}' version: {self.Commands[command]['version']}", help="Shows commands's version number.")
+            commandparse.add_argument('--version','-v', action='version',version=f"{Main.OutputTypes['info']}: Command '{command}' version: {self.Commands[command]['version']}", help="Shows commands's version number.")
             commandparse.set_defaults(func=commanddict['func'])
         parser.add_argument('--version','-v', action='version',version=f"Clever Template version: {Main.Version}", help="Shows app's version number.")
         parser.add_argument('--help','-h', action='help', default=argparse.SUPPRESS, help='Shows help about the app.')
