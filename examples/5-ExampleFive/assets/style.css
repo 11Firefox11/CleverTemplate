@@ -1,0 +1,7 @@
+h1 {
+    color: {{ ctdata.h1color }};
+}
+
+body {
+    background-color: {{ ctdata.pagecolor }};
+}

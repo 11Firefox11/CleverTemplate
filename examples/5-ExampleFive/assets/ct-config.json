@@ -1,0 +1,12 @@
+{
+    "index.html":{
+        "pagetitle":["text"],
+        "title":["text"],
+        "content":["text"],
+        "showwarning":["boolean"]
+    },
+    "style.css":{
+        "h1color":["text", "#000000"],
+        "pagecolor":["text","#9596a2"]
+    }
+}

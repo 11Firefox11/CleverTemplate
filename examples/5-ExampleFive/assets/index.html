@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ ctdata.pagetitle }}</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<h1>{{ ctdata.title }}</h1>
+<p>{{ ctdata.content }}</p>
+{% if ctdata.showwarning %}
+    <h3>Warning! This page is too good.</h3>
+{% endif %}
+</body>
+</html>

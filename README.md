@@ -47,7 +47,7 @@ For the full app usage, and for better understanding, please consider reading: [
 Clever Template uses simply syntaxes for commands. A command usually have arguments. There are positional arguments that must be in the command, and there are arguments which are optional, it means that it is not a must to be in the command. There are some [default optional arguments](#default-optional-arguments).
 #### `create`
 With this command, the user can create final files from templates, by giving the [path](#path) of the [config file](#config-file).  
-After the app scanned the config file, it will ask for input from the terminal, for all [variables](#variable) that were specified in the config file. The user can enter in multiline input mode too here, by typing `!ml`, it can be exited from here, by typing `!q`. The multiline mode will ask for input till it is exited. When the app asks for input in the terminal, by hiting `CTRL + C`, the app will quit.   
+After the app scanned the config file, it will ask for input from the terminal, for all [variables](#variable) that were specified in the config file. If the current variable is a list, it will be in list input mode by default, that means, that till the user quits from it, it will ask for input. The user can quit from list input mode with: `!qlist`. The user can enter in multiline input mode too here, by typing `!ml`, it can be exited from here, by typing `!qml`. The multiline mode will ask for input till it is exited. When the app asks for input in the terminal, by hiting `CTRL + C`, the app will quit.   
 The user can specify a [custom data file](#custom-input-data-file) too, that will be used instead of asking in data for all variables in the terminal.  
 If any input value does not match with its variable type, it will be replaced by the default variable value.  
 - #### Arguments:
@@ -92,6 +92,7 @@ This is a string, what can be three things:
 - `text`: this is simply just a text, string, it can have any value what can be changed into a text.
 - `number`: this is a number, can be any type of number, a whole number or not, it does not matter.
 - `boolean`: this is simply just a `true` or `false` variable type.
+- `list`: this is a list, it can have any items, its lenght is not limited.
 
 The string must match exactly with the three variable types. Etc. it can't be `TEXT` or `Num`, all its characters should be with small letters, and the type should be fully written out. This is the first index of the array inside its variable object, this must be defined.
 ###### `DEFAULTVALUE`
